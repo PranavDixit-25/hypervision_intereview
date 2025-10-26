@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HyperVision - Event Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <h1>HyperVision</h1>
+                <span class="tagline">Event Management System</span>
+            </div>
+            <nav class="nav">
+                <button class="nav-link active" data-page="events">Events</button>
+                <button class="nav-link" data-page="members">Team Members</button>
+                <button class="nav-link" data-page="sponsorships">Sponsorships</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Page 1: Events Landing Page -->
+        <section id="events-page" class="page active">
+            <div class="hero">
+                <h2>Welcome to HyperVision</h2>
+                <p>Manage your events, teams, and sponsorships all in one place</p>
+            </div>
+            
+            <div class="page-header">
+                <h3>All Events</h3>
+                <button class="btn btn--primary" id="add-event-btn">
+                    <span class="btn-icon">+</span> Add New Event
+                </button>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" id="event-search" class="form-control" placeholder="Search events by name or description...">
+            </div>
+            
+            <div id="events-grid" class="events-grid"></div>
+        </section>
+
+        <!-- Page 2: Team Members Page -->
+        <section id="members-page" class="page">
+            <div class="page-header">
+                <h3>Team Members</h3>
+                <button class="btn btn--primary" id="add-member-btn">
+                    <span class="btn-icon">+</span> Add New Member
+                </button>
+            </div>
+            
+            <div class="filter-controls">
+                <input type="text" id="member-search" class="form-control" placeholder="Search members by name...">
+                <select id="member-event-filter" class="form-control">
+                    <option value="all">All Events</option>
+                </select>
+            </div>
+            
+            <div id="members-list" class="members-list"></div>
+        </section>
+
+        <!-- Page 3: Sponsorships Page -->
+        <section id="sponsorships-page" class="page">
+            <div class="page-header">
+                <h3>Event Sponsorships</h3>
+                <button class="btn btn--primary" id="add-sponsorship-btn">
+                    <span class="btn-icon">+</span> Add New Sponsorship
+                </button>
+            </div>
+            
+            <div class="sponsorship-summary" id="sponsorship-summary"></div>
+            
+            <div class="filter-controls">
+                <input type="text" id="sponsorship-search" class="form-control" placeholder="Search sponsors...">
+                <select id="sponsorship-event-filter" class="form-control">
+                    <option value="all">All Events</option>
+                </select>
+            </div>
+            
+            <div id="sponsorships-list" class="sponsorships-list"></div>
+        </section>
+    </main>
+
+    <!-- Modal for Add/Edit Event -->
+    <div id="event-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="event-modal-title">Add New Event</h4>
+                <button class="modal-close" data-modal="event-modal">&times;</button>
+            </div>
+            <form id="event-form">
+                <div class="form-group">
+                    <label class="form-label" for="event-name">Event Name *</label>
+                    <input type="text" id="event-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="event-date">Event Date *</label>
+                    <input type="date" id="event-date" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="event-description">Description *</label>
+                    <textarea id="event-description" class="form-control" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="event-status">Status *</label>
+                    <select id="event-status" class="form-control" required>
+                        <option value="Upcoming">Upcoming</option>
+                        <option value="Ongoing">Ongoing</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn--secondary" data-modal="event-modal">Cancel</button>
+                    <button type="submit" class="btn btn--primary">Save Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Member -->
+    <div id="member-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="member-modal-title">Add New Member</h4>
+                <button class="modal-close" data-modal="member-modal">&times;</button>
+            </div>
+            <form id="member-form">
+                <div class="form-group">
+                    <label class="form-label" for="member-name">Name *</label>
+                    <input type="text" id="member-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="member-role">Role/Position *</label>
+                    <input type="text" id="member-role" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="member-event">Assigned Event *</label>
+                    <select id="member-event" class="form-control" required>
+                        <option value="">Select an event</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="member-email">Email *</label>
+                    <input type="email" id="member-email" class="form-control" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn--secondary" data-modal="member-modal">Cancel</button>
+                    <button type="submit" class="btn btn--primary">Save Member</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Sponsorship -->
+    <div id="sponsorship-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="sponsorship-modal-title">Add New Sponsorship</h4>
+                <button class="modal-close" data-modal="sponsorship-modal">&times;</button>
+            </div>
+            <form id="sponsorship-form">
+                <div class="form-group">
+                    <label class="form-label" for="sponsor-name">Sponsor Company Name *</label>
+                    <input type="text" id="sponsor-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="sponsor-event">Event *</label>
+                    <select id="sponsor-event" class="form-control" required>
+                        <option value="">Select an event</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="sponsor-tier">Sponsorship Tier *</label>
+                    <select id="sponsor-tier" class="form-control" required>
+                        <option value="Gold">Gold</option>
+                        <option value="Silver">Silver</option>
+                        <option value="Bronze">Bronze</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="sponsor-amount">Amount *</label>
+                    <input type="text" id="sponsor-amount" class="form-control" placeholder="₹5,00,000" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="sponsor-contact">Contact Email *</label>
+                    <input type="email" id="sponsor-contact" class="form-control" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn--secondary" data-modal="sponsorship-modal">Cancel</button>
+                    <button type="submit" class="btn btn--primary">Save Sponsorship</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
